@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app.routing';
 import { MapComponent } from './map/map.component';
 import { AgmCoreModule } from '@agm/core'
 
+import { MainService } from './services/main.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +24,7 @@ import { AgmCoreModule } from '@agm/core'
       apiKey: null
     })
   ],
-  providers: [],
+  providers: [MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
