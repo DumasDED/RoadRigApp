@@ -19,4 +19,9 @@ export class MainService {
         return this.http.get(this.apiBaseUrl + 'cityStateList')
                  .map(response => response.json());
     }
+
+    getCity(cityName: string): Observable<City> {
+        return this.http.get(this.apiBaseUrl + `cities/${cityName}`)
+                        .map(r => r.json() as City)
+    }
 }

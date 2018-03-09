@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
+import { AgmMap } from '@agm/core';
 
 import { Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators/startWith';
@@ -15,8 +17,7 @@ import { City, State } from 'app/models';
 })
 export class MapComponent implements OnInit {
 
-  lat: number = 40.6782;
-  lng: number = -73.9442;
+  @ViewChild(AgmMap) map: AgmMap;
 
   viewport = {
     west: -112.101512,
@@ -27,13 +28,37 @@ export class MapComponent implements OnInit {
 
   cityStateList;
 
-  constructor(private service: MainService) { }
+  cityCtrl: FormControl;
+  filteredCityStates: Observable<any[]>;
+
+  constructor(private service: MainService) {
+    this.cityCtrl = new FormControl();
+  }
+
+  filterCities(name: string) {
+    return this.cityStateList.filter(cityState => {
+      return cityState.toLowerCase().indexOf(name.toLowerCase()) === 0;
+    });
+  }
+
+  setViewport() {
+    var city = this.cityCtrl.value.split(',')[0];
+    this.service.getCity(city).subscribe(c => {
+      this.viewport.north = c.north;
+      this.viewport.south = c.south;
+      this.viewport.east = c.east;
+      this.viewport.west = c.west;
+      this.map.triggerResize(true);
+    })
+  }
 
   ngOnInit() {
     this.service.getCitiesList().subscribe(t => {
       this.cityStateList = t.map(r => r.city.name + ', ' + r.state.abbr);
-      console.log(t);
+      this.filteredCityStates = this.cityCtrl.valueChanges.pipe(
+        startWith(''),
+        map((city: string) => city ? this.filterCities(city) : this.cityStateList.slice())
+      )
     })
   }
-
 }

@@ -1,7 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControlDirective, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { 
+  MatInputModule,
+  MatAutocompleteModule
+} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -18,13 +24,17 @@ import { MainService } from './services/main.service';
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     AgmCoreModule.forRoot({
       apiKey: null
-    })
+    }),
+    MatInputModule,
+    MatAutocompleteModule
   ],
-  providers: [MainService],
+  providers: [MainService, FormControlDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
