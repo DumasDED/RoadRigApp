@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:7474/db/data/'
+  apiBaseUrl: 'http://localhost:5002/'
 };

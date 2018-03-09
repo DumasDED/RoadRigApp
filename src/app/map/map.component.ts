@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import { Observable } from 'rxjs';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
 
 import { MainService } from 'app/services/main.service';
 import { City, State } from 'app/models';
@@ -14,16 +19,21 @@ export class MapComponent implements OnInit {
   lng: number = -73.9442;
 
   viewport = {
-    'west': -122.4596959,
-    'east': -122.2244331,
-    'north': 47.734145,
-    'south': 47.4919119
+    west: -112.101512,
+    east: -111.7394581,
+    north: 40.8529699,
+    south: 40.700246
   }
+
+  cityStateList;
 
   constructor(private service: MainService) { }
 
   ngOnInit() {
-    this.service.getCitiesList();
+    this.service.getCitiesList().subscribe(t => {
+      this.cityStateList = t.map(r => r.city.name + ', ' + r.state.abbr);
+      console.log(t);
+    })
   }
 
 }
