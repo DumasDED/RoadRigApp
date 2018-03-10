@@ -1,11 +1,26 @@
-<form>
-    <mat-form-field>
-        <input matInput placeholder="City" aria-label="City" [matAutocomplete]="auto" [formControl]="cityCtrl" (keyup.enter)="setViewport()">
-        <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let cityState of filteredCityStates | async" [value]="cityState">
-                <span>{{ cityState }}</span>
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-</form>
-<agm-map [fitBounds]="viewport"></agm-map>
+<mat-toolbar>
+    <span>RoadRig</span>
+    <span fxFlex></span>
+    <span>{{ highlightedVenue }}</span>
+    <span fxFlex></span>
+    <form>
+        <mat-form-field>
+            <input matInput [matAutocomplete]="auto" [formControl]="cityCtrl" (keyup.enter)="setViewport()">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let cityState of filteredCityStates | async" [value]="cityState">
+                    <span>{{ cityState }}</span>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</mat-toolbar>
+<agm-map [fitBounds]="viewport">
+    <agm-marker
+        *ngFor="let m of venueMarkers; let i = index"
+        [latitude]="m.latitude"
+        [longitude]="m.longitude"
+        [markerDraggable]="false"
+        (mouseOver)="showVenueDetails(m)"
+        (mouseOut)="resetVenueDetails()">
+    </agm-marker>
+</agm-map>

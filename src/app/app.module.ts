@@ -6,13 +6,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { 
   MatInputModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout'
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { MapComponent } from './map/map.component';
 import { AgmCoreModule } from '@agm/core'
+
 
 import { MainService } from './services/main.service';
 
@@ -31,8 +35,11 @@ import { MainService } from './services/main.service';
     AgmCoreModule.forRoot({
       apiKey: null
     }),
+    FlexLayoutModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatToolbarModule,
+    MatTooltipModule
   ],
   providers: [MainService, FormControlDirective],
   bootstrap: [AppComponent]

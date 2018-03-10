@@ -24,4 +24,19 @@ export class MainService {
         return this.http.get(this.apiBaseUrl + `cities/${cityName}`)
                         .map(r => r.json() as City)
     }
+
+    getCityVenues(cityName: string): Observable<any[]> {
+        return this.http.get(this.apiBaseUrl + `cities/${cityName}/venues`)
+                        .map(r => r.json())
+    }
+
+    getVenueEvents(venueUsername: string): Observable<any[]> {
+        return this.http.get(this.apiBaseUrl + `venues/${venueUsername}/events`)
+                        .map(r => r.json())
+    }
+
+    getVenueBands(venueUsername: string): Observable<any[]> {
+        return this.http.get(this.apiBaseUrl + `venues/${venueUsername}/bands`)
+                        .map(r => r.json())
+    }
 }
