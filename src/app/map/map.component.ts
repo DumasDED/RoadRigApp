@@ -20,10 +20,10 @@ export class MapComponent implements OnInit {
   @ViewChild(AgmMap) map: AgmMap;
 
   viewport = {
-    west: -112.101512,
-    east: -111.7394581,
-    north: 40.8529699,
-    south: 40.700246
+    west: -124.39,
+    east: -66.94,
+    north: 49.38,
+    south: 25.82
   }
 
   cityStateList;
@@ -32,7 +32,8 @@ export class MapComponent implements OnInit {
   filteredCityStates: Observable<any[]>;
 
   venueMarkers: any[];
-  highlightedVenue: string = "Hover over a marker";
+  highlightedVenue: string = "";
+  markerIcon = '/assets/test-marker-1.png'
 
   constructor(private service: MainService) {
     this.cityCtrl = new FormControl();
@@ -54,8 +55,14 @@ export class MapComponent implements OnInit {
       this.viewport.south = c[0].south;
       this.viewport.east = c[0].east;
       this.viewport.west = c[0].west;
-      this.venueMarkers = c[1].filter(v => v.latitude != null && v.longitude != null).slice(0,20)
+      this.venueMarkers = c[1].filter(v => v.latitude != null && v.longitude != null)
+                              .slice(0,20)
+                              .map(m => {
+                                m.icon = '/assets/test-marker-1.png';
+                                return m;
+                              })
       this.map.triggerResize(true);
+      this.highlightedVenue = "Hover over a marker"
     })
   }
 
@@ -73,7 +80,8 @@ export class MapComponent implements OnInit {
     console.log(thing);
   }
 
-  showVenueDetails(venue: any) {
+  showVenueDetails(venue: any, markerIndex: number) {
+    this.venueMarkers[markerIndex].icon = '/assets/test-marker-2.png';
     Observable.forkJoin(
       this.service.getVenueEvents(venue.username || venue.id),
       this.service.getVenueBands(venue.username || venue.id)
@@ -82,7 +90,8 @@ export class MapComponent implements OnInit {
     })
   }
 
-  resetVenueDetails() {
+  resetVenueDetails(markerIndex: number) {
+    this.venueMarkers[markerIndex].icon = '/assets/test-marker-1.png';
     this.highlightedVenue = "Hover over a marker";
   }
 }

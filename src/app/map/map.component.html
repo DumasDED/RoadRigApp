@@ -17,10 +17,11 @@
 <agm-map [fitBounds]="viewport">
     <agm-marker
         *ngFor="let m of venueMarkers; let i = index"
+        [iconUrl]="m.icon"
         [latitude]="m.latitude"
         [longitude]="m.longitude"
         [markerDraggable]="false"
-        (mouseOver)="showVenueDetails(m)"
-        (mouseOut)="resetVenueDetails()">
+        (mouseOver)="showVenueDetails(m, i)"
+        (mouseOut)="resetVenueDetails(i)">
     </agm-marker>
 </agm-map>
