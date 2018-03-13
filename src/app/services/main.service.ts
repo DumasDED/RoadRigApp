@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from './../../environments/environment';
 
-import { City, State } from 'app/models'
+import { City, State, Viewport } from 'app/models'
 
 @Injectable()
 export class MainService {
@@ -27,6 +27,12 @@ export class MainService {
 
     getCityVenues(cityName: string): Observable<any[]> {
         return this.http.get(this.apiBaseUrl + `cities/${cityName}/venues`)
+                        .map(r => r.json())
+    }
+
+    getViewportVenues(viewport: Viewport): Observable<any[]> {
+        return this.http.get(this.apiBaseUrl +
+            `viewport/venues?south=${viewport.south}&north=${viewport.north}&west=${viewport.west}&east=${viewport.east}`)
                         .map(r => r.json())
     }
 

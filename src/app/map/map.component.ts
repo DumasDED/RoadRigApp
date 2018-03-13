@@ -47,21 +47,30 @@ export class MapComponent implements OnInit {
 
   setViewport() {
     var city = this.cityCtrl.value.split(',')[0];
-    Observable.forkJoin(
-      this.service.getCity(city),
-      this.service.getCityVenues(city)
-    ).subscribe(c => {
-      this.viewport.north = c[0].north;
-      this.viewport.south = c[0].south;
-      this.viewport.east = c[0].east;
-      this.viewport.west = c[0].west;
-      this.venueMarkers = c[1].filter(v => v.latitude != null && v.longitude != null)
-                              .slice(0,20)
+    this.service.getCity(city).subscribe(c => {
+      this.viewport.north = c.north;
+      this.viewport.south = c.south;
+      this.viewport.east = c.east;
+      this.viewport.west = c.west;
+      this.service.getViewportVenues(this.viewport).subscribe(v => {
+        this.venueMarkers = v.slice(0,20)
+                                .map(m => {
+                                  m.icon = '/assets/test-marker-1.png';
+                                  return m;
+                                })
+        this.map.triggerResize(true);
+        this.highlightedVenue = "Hover over a marker"
+      })
+    })
+  }
+
+  getVenuesByViewport() {
+    this.service.getViewportVenues(this.viewport).subscribe(v => {
+      this.venueMarkers = v.slice(0,20)
                               .map(m => {
                                 m.icon = '/assets/test-marker-1.png';
                                 return m;
                               })
-      this.map.triggerResize(true);
       this.highlightedVenue = "Hover over a marker"
     })
   }
